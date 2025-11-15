@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreelanceHub - Your Inquiry Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* LIGHT THEME (Default) */
+        body.light-theme {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0,0,0,0.1);
+            --shadow-hover: rgba(0,0,0,0.2);
+        }
+
+        /* DARK THEME */
+        body.dark-theme {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --card-bg: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --border-color: #2c3e50;
+            --shadow: rgba(0,0,0,0.5);
+            --shadow-hover: rgba(0,0,0,0.7);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        /* HOME PAGE STYLES */
+        .home-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        nav {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s;
+        }
+
+        .hero-content p {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            animation: fadeInUp 1s;
+        }
+
+        .cta-btn {
+            background: white;
+            color: #667eea;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        .feature-icon {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .feature-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Additional Showcase Section */
+        .showcase {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .showcase-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .showcase-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .showcase-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-content {
+            padding: 30px;
+        }
+
+        .showcase-content h3 {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .showcase-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* INQUIRY PAGE STYLES */
+        .inquiry-page {
+            display: none;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .inquiry-page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-content h1 {
+            font-size: 2.5em;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .header-content p {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .back-btn {
+            background: #ffffff;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            font-size: 2em;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0;
+            width: 40px;
+            height: 40px;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border 0.3s;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .inquiries-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .inquiries-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .inquiries-header h2 {
+            font-size: 2em;
+            color: var(--text-primary);
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stat-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .stat-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stat-accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            border: 3px dashed var(--border-color);
+            border-radius: 15px;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .inquiry-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .inquiry-card:hover {
+            box-shadow: 0 5px 20px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .inquiry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .inquiry-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inquiry-title h3 {
+            font-size: 1.4em;
+            color: var(--text-primary);
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .inquiry-email {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .inquiry-date {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        .inquiry-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .inquiry-message {
+            margin-bottom: 20px;
+        }
+
+        .inquiry-message h4 {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .inquiry-message p {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .inquiry-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inquiry-actions .btn {
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5em;
+            }
+
+            .features, .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 20px;
+            }
+
+            .hero, .showcase {
+                padding: 40px 20px;
+            }
+
+            .header-content h1 {
+                font-size: 1.8em;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .inquiry-details {
+                grid-template-columns: 1fr;
+            }
+
+            .inquiry-actions {
+                flex-direction: column;
+            }
+
+            .inquiry-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- HOME PAGE -->
+    <div id="homePage" class="home-page">
+        <nav>
+            <div class="logo">FreelanceHub</div>
+            <button class="nav-btn" onclick="goToInquiries()">View Inquiries</button>
+        </nav>
+
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Streamline Your Freelance Inquiries</h1>
+                <p>Manage client inquiries effortlessly in one beautiful dashboard</p>
+                <button class="cta-btn" onclick="goToInquiries()">Get Started →</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop" alt="Team collaboration">
+                    </div>
+                    <h3>Easy Inquiry Forms</h3>
+                    <p>Simple and clean forms that clients love to fill out. Get all the information you need upfront.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" alt="Dashboard analytics">
+                    </div>
+                    <h3>Organized Dashboard</h3>
+                    <p>View all your inquiries in one place. No more scattered emails or lost messages.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=600&fit=crop" alt="Teamwork">
+                    </div>
+                    <h3>Quick Decisions</h3>
+                    <p>Accept or reject inquiries with one click. Focus on the projects that matter to you.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Showcase Section -->
+        <div class="showcase">
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop" alt="Professional communication">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Professional Communication</h3>
+                        <p>Make a great first impression with a professional inquiry system that shows you mean business.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop" alt="Track everything">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Track Everything</h3>
+                        <p>Keep track of all client inquiries, budgets, timelines, and project details in one centralized location.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop" alt="Save time">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Save Time</h3>
+                        <p>Stop wasting time searching through emails. Find any inquiry instantly with our organized system.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=600&fit=crop" alt="Grow business">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Grow Your Business</h3>
+                        <p>Focus on what matters - delivering great work. Let FreelanceHub handle your inquiry management.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?w=800&h=600&fit=crop" alt="Stay organized">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Stay Organized</h3>
+                        <p>Never lose track of potential clients again. Every inquiry is stored and easily searchable.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop" alt="Work smarter">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Work Smarter</h3>
+                        <p>Streamline your workflow and respond to clients faster with our intuitive interface.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1556155092-8707de31f9c4?w=800&h=600&fit=crop" alt="Client insights">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Client Insights</h3>
+                        <p>Get valuable insights about your inquiries - budgets, timelines, and service preferences at a glance.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop" alt="Collaborate better">
+                    </div>
+                    <div class="showcase-content">
+                        <h3>Collaborate Better</h3>
+                        <p>Share inquiry details with your team and make informed decisions together.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INQUIRY PAGE -->
+    <div id="inquiryPage" class="inquiry-page">
+        <div class="container">
+            <header>
+                <div class="header-content">
+                    <h1>FreelanceHub</h1>
+                    <p>Simple inquiry management for freelancers</p>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn back-btn" onclick="goToHome()">← Back Home</button>
+                    <button class="btn" onclick="openModal()">✉️ New Inquiry</button>
+                </div>
+            </header>
+
+            <!-- Modal Form -->
+            <div id="inquiryModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Send an Inquiry</h2>
+                        <button class="close-btn" onclick="closeModal()">×</button>
+                    </div>
+
+                    <div id="successMessage" class="success-message">
+                        ✓ Inquiry submitted successfully!
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="name" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Service Needed</label>
+                        <select id="service">
+                            <option value="">Select a service</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="Content Writing">Content Writing</option>
+                            <option value="SEO Services">SEO Services</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Budget Range</label>
+                            <select id="budget">
+                                <option value="">Select budget</option>
+                                <option value="$500-$1000">$500-$1000</option>
+                                <option value="$1000-$3000">$1000-$3000</option>
+                                <option value="$3000-$5000">$3000-$5000</option>
+                                <option value="$5000+">$5000+</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Timeline</label>
+                            <select id="timeline">
+                                <option value="">Select timeline</option>
+                                <option value="ASAP">ASAP</option>
+                                <option value="1-2 weeks">1-2 weeks</option>
+                                <option value="1 month">1 month</option>
+                                <option value="2-3 months">2-3 months</option>
+                                <option value="Flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Details</label>
+                        <textarea id="message" placeholder="Tell me about your project..."></textarea>
+                    </div>
+
+                    <button class="btn" style="width: 100%;" onclick="submitInquiry()">
+                        ✉️ Submit Inquiry
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inquiries List -->
+            <div class="inquiries-section">
+                <div class="inquiries-header">
+                    <h2 id="inquiriesTitle">Inquiries (0)</h2>
+                    <div class="stats" id="stats" style="display: none;">
+                        <span class="stat-badge stat-pending" id="pendingCount">Pending: 0</span>
+                        <span class="stat-badge stat-accepted" id="acceptedCount">Accepted: 0</span>
+                    </div>
+                </div>
+
+                <div id="emptyState" class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                    <h3>No inquiries yet</h3>
+                    <p>Start by creating your first inquiry</p>
+                    <button class="btn" onclick="openModal()">✉️ Create Inquiry</button>
+                </div>
+
+                <div id="inquiriesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inquiries = [];
+        let currentTheme = 'light';
+
+        // Load theme from storage
+        window.addEventListener('load', async function() {
+            try {
+                const themeData = await window.storage.get('app-theme');
+                if (themeData) {
+                    currentTheme = themeData.value;
+                    document.body.className = currentTheme + '-theme';
+                    updateThemeIcon();
+                }
+            } catch (error) {
+                console.log('Using default theme');
+            }
+            loadInquiries();
+        });
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.className = currentTheme + '-theme';
+            updateThemeIcon();
+            
+            // Save theme preference
+            window.storage.set('app-theme', currentTheme).catch(err => {
+                console.log('Could not save theme preference');
+            });
+        }
+
+        function updateThemeIcon() {
+            document.getElementById('themeIcon').textContent = currentTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        function goToInquiries() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('inquiryPage').classList.add('active');
+        }
+
+        function goToHome() {
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('inquiryPage').classList.remove('active');
+        }
+
+        async function loadInquiries() {
+            try {
+                const result = await window.storage.list('inquiry:');
+                if (result && result.keys) {
+                    const promises = result.keys.map(async (key) => {
+                        try {
+                            const data = await window.storage.get(key);
+                            return data ? JSON.parse(data.value) : null;
+                        } catch {
+                            return null;
+                        }
+                    });
+                    inquiries = (await Promise.all(promises))
+                        .filter(Boolean)
+                        .sort((a, b) => b.timestamp - a.timestamp);
+                    renderInquiries();
+                }
+            } catch (error) {
+                console.log('No inquiries yet');
+            }
+        }
+
+        function openModal() {
+            document.getElementById('inquiryModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('inquiryModal').classList.remove('active');
+            document.getElementById('successMessage').classList.remove('active');
+        }
+
+        async function submitInquiry() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const service = document.getElementById('service').value;
+            const budget = document.getElementById('budget').value;
+            const timeline = document.getElementById('timeline').value;
+            const message = document.getElementById('message').value;
+
+            if (!name || !email || !service || !budget || !timeline || !message) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const inquiry = {
+                id: Date.now().toString(),
+                name,
+                email,
+                service,
+                budget,
+                timeline,
+                message,
+                timestamp: Date.now(),
+                status: 'pending'
+            };
+
+            try {
+                await window.storage.set(`inquiry:${inquiry.id}`, JSON.stringify(inquiry));
+                inquiries.unshift(inquiry);
+                renderInquiries();
+
+                document.getElementById('successMessage').classList.add('active');
+
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('service').value = '';
+                document.getElementById('budget').value = '';
+                document.getElementById('timeline').value = '';
+                document.getElementById('message').value = '';
+
+                setTimeout(() => {
+                    closeModal();
+                }, 2000);
+            } catch (error) {
+                alert('Failed to submit inquiry. Please try again.');
+            }
+        }
+
+        async function updateStatus(id, newStatus) {
+            try {
+                const result = await window.storage.get(`inquiry:${id}`);
+                if (result) {
+                    const inquiry = JSON.parse(result.value);
+                    inquiry.status = newStatus;
+                    await window.storage.set(`inquiry:${id}`, JSON.stringify(inquiry));
+                    inquiries = inquiries.map(i => i.id === id ? inquiry : i);
+                    renderInquiries();
+                }
+            } catch (error) {
+                alert('Failed to update status');
+            }
+        }
+
+        async function deleteInquiry(id) {
+            if (!confirm('Are you sure you want to delete this inquiry?')) return;
+
+            try {
+                await window.storage.delete(`inquiry:${id}`);
+                inquiries = inquiries.filter(i => i.id !== id);
+                renderInquiries();
+            } catch (error) {
+                alert('Failed to delete inquiry');
+            }
+        }
+
+        function renderInquiries() {
+            const emptyState = document.getElementById('emptyState');
+            const inquiriesList = document.getElementById('inquiriesList');
+            const stats = document.getElementById('stats');
+            const title = document.getElementById('inquiriesTitle');
+
+            title.textContent = `Inquiries (${inquiries.length})`;
+
+            if (inquiries.length === 0) {
+                emptyState.style.display = 'block';
+                inquiriesList.innerHTML = '';
+                stats.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            stats.style.display = 'flex';
+
+            const pendingCount = inquiries.filter(i => i.status === 'pending').length;
+            const acceptedCount = inquiries.filter(i => i.status === 'accepted').length;
+
+            document.getElementById('pendingCount').textContent = `Pending: ${pendingCount}`;
+            document.getElementById('acceptedCount').textContent = `Accepted: ${acceptedCount}`;
+
+            inquiriesList.innerHTML = inquiries.map(inquiry => `
+                <div class="inquiry-card">
+                    <div class="inquiry-header">
+                        <div class="inquiry-title">
+                            <h3>${inquiry.name}</h3>
+                            <span class="status-badge status-${inquiry.status}">${inquiry.status}</span>
+                        </div>
+                        <span class="inquiry-date">${new Date(inquiry.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <p class="inquiry-email">✉️ ${inquiry.email}</p>
+
+                    <div class="inquiry-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Service</div>
+                            <div class="detail-value">${inquiry.service}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Budget</div>
+                            <div class="detail-value">${inquiry.budget}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Timeline</div>
+                            <div class="detail-value">${inquiry.timeline}</div>
+                        </div>
+                    </div>
+
+                    <div class="inquiry-message">
+                        <h4>Project Details:</h4>
+                        <p>${inquiry.message}</p>
+                    </div>
+
+                    <div class="inquiry-actions">
+                        ${inquiry.status === 'pending' ? `
+                            <button class="btn btn-success" onclick="updateStatus('${inquiry.id}', 'accepted')">
+                                ✓ Accept
+                            </button>
+                            <button class="btn btn-danger" onclick="updateStatus('${inquiry.id}', 'rejected')">
+                                ✗ Reject
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-secondary" onclick="deleteInquiry('${inquiry.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('inquiryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

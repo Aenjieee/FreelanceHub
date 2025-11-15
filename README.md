@@ -1,3 +1,8 @@
+Not finished / Work in progress
+
+![Work in Progress](https://img.shields.io/badge/status-in--progress-yellow)
+
+
 # 🚀 FreelanceHub - Inquiry Management Platform
 
 ![FreelanceHub](https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&h=300&fit=crop&q=80)
